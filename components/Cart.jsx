@@ -3,26 +3,34 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { AiOutlineMinus, AiOutlinePlus, AiOutlineLeft, AiOutlineShopping } from 'react-icons/ai';
 import { TiDeleteOutline } from 'react-icons/ti';
-
 import { useStateContext } from '../context/StateContext';
 import { urlFor } from '../lib/client';
 
 const Cart = () => {
-  const { totalPrice, totalQuantities, cartItems, setShowCart, toggleCartItemQuanitity, onRemove } = useStateContext();
+  const { totalPrice, totalQuantities, cartItems, setShowCart, toggleCartItemQuantity, onRemove } = useStateContext();
   const router = useRouter();
 
   const handleCheckout = () => {
-    // Hide the cart when the user clicks Checkout
     setShowCart(false);
-
-    // Proceed to the checkout page
     router.push({
       pathname: '/Checkout',
       query: {
         totalPrice,
-        cartItems: JSON.stringify(cartItems), // Send cart items as string
+        cartItems: JSON.stringify(cartItems),
       },
     });
+  };
+
+  const handleQuantityChange = (item, action) => {
+    const newQuantity = action === 'inc' ? item.quantity + 1 : item.quantity - 1;
+
+    if (newQuantity <= 0) {
+      onRemove(item);
+    } else if (newQuantity > item.stock) {
+      alert('Cannot add more than available stock.');
+    } else {
+      toggleCartItemQuantity(item._id, action);
+    }
   };
 
   return (
@@ -68,11 +76,11 @@ const Cart = () => {
                     <div className="flex bottom">
                       <div>
                         <p className="quantity-desc">
-                          <span className="minus" onClick={() => toggleCartItemQuanitity(item._id, 'dec')}>
+                          <span className="minus" onClick={() => handleQuantityChange(item, 'dec')}>
                             <AiOutlineMinus />
                           </span>
                           <span className="num">{item.quantity}</span>
-                          <span className="plus" onClick={() => toggleCartItemQuanitity(item._id, 'inc')}>
+                          <span className="plus" onClick={() => handleQuantityChange(item, 'inc')}>
                             <AiOutlinePlus />
                           </span>
                         </p>

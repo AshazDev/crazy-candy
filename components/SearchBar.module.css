@@ -1,0 +1,15 @@
+.searchContainer {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    width: 100%;
+  }
+
+  .searchBar {
+    width: 100%;
+    max-width: 1200px; /* Adjust this to match the width of your hero banner */
+    padding: 12px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }

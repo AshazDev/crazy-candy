@@ -22,6 +22,7 @@ const Checkout = () => {
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [cartVisible, setCartVisible] = useState(true);
+  const [loading, setLoading] = useState(false); // Add loading state
 
   useEffect(() => {
     if (router.query.cartItems) {
@@ -57,6 +58,7 @@ const Checkout = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true
 
     const uploadedImageUrl = await uploadImage();
 
@@ -82,6 +84,8 @@ const Checkout = () => {
     } catch (error) {
       console.error('Error placing order:', error);
       toast.error('Failed to place order');
+    } finally {
+      setLoading(false); // Set loading to false
     }
   };
 
@@ -190,8 +194,16 @@ const Checkout = () => {
           </>
         )}
 
-        <button type="submit" className={styles.submitButton}>Submit Order</button>
+        <button type="submit" className={styles.submitButton} disabled={loading}>
+          {loading ? 'Submitting...' : 'Submit Order'}
+        </button>
       </form>
+
+      {loading && (
+        <div className={styles.overlay}>
+          <div className={styles.loader}>Processing...</div>
+        </div>
+      )}
     </div>
   );
 };

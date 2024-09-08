@@ -6,15 +6,18 @@ import { Product } from '../../components';
 import { useStateContext } from '../../context/StateContext';
 
 const ProductDetails = ({ product, products }) => {
-  const { image, name, details, price } = product;
+  const { image, name, details, price, stock } = product; // Include stock in the destructuring
   const [index, setIndex] = useState(0);
   const { decQty, incQty, qty, onAdd, setShowCart } = useStateContext();
 
   const handleBuyNow = () => {
-    onAdd(product, qty);
-
-    setShowCart(true);
-  }
+    if (qty <= stock) { // Ensure the quantity does not exceed stock
+      onAdd(product, qty);
+      setShowCart(true);
+    } else {
+      alert('Cannot add more items than available in stock.');
+    }
+  };
 
   return (
     <div>
@@ -52,42 +55,60 @@ const ProductDetails = ({ product, products }) => {
           <h4>Details: </h4>
           <p>{details}</p>
           <p className="price">BD{price}</p>
+          <p className="stock">{stock > 0 ? `In Stock: ${stock}` : 'Out of Stock'}</p>
           <div className="quantity">
             <h3>Quantity:</h3>
             <p className="quantity-desc">
               <span className="minus" onClick={decQty}><AiOutlineMinus /></span>
               <span className="num">{qty}</span>
-              <span className="plus" onClick={incQty}><AiOutlinePlus /></span>
+              <span className="plus" onClick={() => {
+                if (qty < stock) {
+                  incQty();
+                } else {
+                  alert('Cannot add more than available stock.');
+                }
+              }}><AiOutlinePlus /></span>
             </p>
           </div>
           <div className="buttons">
-            <button type="button" className="add-to-cart" onClick={() => onAdd(product, qty)}>Add to Cart</button>
+            <button
+              type="button"
+              className="add-to-cart"
+              onClick={() => {
+                if (qty <= stock) {
+                  onAdd(product, qty);
+                } else {
+                  alert('Cannot add more items than available in stock.');
+                }
+              }}
+            >
+              Add to Cart
+            </button>
             <button type="button" className="buy-now" onClick={handleBuyNow}>Buy Now</button>
           </div>
         </div>
       </div>
 
       <div className="maylike-products-wrapper">
-          <h2>More Products</h2>
-          <div className="marquee">
-            <div className="maylike-products-container track">
-              {products.map((item) => (
-                <Product key={item._id} product={item} />
-              ))}
-            </div>
+        <h2>More Products</h2>
+        <div className="marquee">
+          <div className="maylike-products-container track">
+            {products.map((item) => (
+              <Product key={item._id} product={item} />
+            ))}
           </div>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const getStaticPaths = async () => {
   const query = `*[_type == "product"] {
     slug {
       current
     }
-  }
-  `;
+  }`;
 
   const products = await client.fetch(query);
 
@@ -101,20 +122,18 @@ export const getStaticPaths = async () => {
     paths,
     fallback: 'blocking'
   }
-}
+};
 
 export const getStaticProps = async ({ params: { slug }}) => {
   const query = `*[_type == "product" && slug.current == '${slug}'][0]`;
-  const productsQuery = '*[_type == "product"]'
+  const productsQuery = '*[_type == "product"]';
 
   const product = await client.fetch(query);
   const products = await client.fetch(productsQuery);
 
-  console.log(product);
-
   return {
     props: { products, product }
-  }
-}
+  };
+};
 
-export default ProductDetails
+export default ProductDetails;
