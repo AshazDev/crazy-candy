@@ -6,7 +6,7 @@ const Footer = () => {
     <div className="footer-container">
       <p>2024 AshazDev</p>
       <p className="icons">
-        <AiFillInstagram className="href='https://www.instagram.com/crazy_candy_bh/'"/>
+        <AiFillInstagram className="href='https://www.instagram.com/crazy_candy_bh'"/>
       </p>
     </div>
   )

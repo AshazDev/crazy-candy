@@ -76,6 +76,7 @@ const Checkout = () => {
       const ordersCollection = collection(db, 'orders');
       const docRef = await addDoc(ordersCollection, orderData);
       toast.success('Order placed successfully!');
+
       setCartVisible(false);
       router.push(`/order-confirmation?orderId=${docRef.id}&name=${formData.name}&phone=${formData.phone}&email=${formData.email}&address=${formData.address}&paymentMethod=${formData.paymentMethod}&items=${JSON.stringify(items)}&total=${total}`);
     } catch (error) {
@@ -146,7 +147,7 @@ const Checkout = () => {
             className={styles.select}
           >
             <option value="cash">Cash on Delivery</option>
-            <option value="benefit">Benefit Pay</option>
+            <option value="benefit">Benefit Pay (+973 3964 1454)</option>
           </select>
         </div>
         {formData.paymentMethod === 'benefit' && (
