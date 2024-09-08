@@ -1,0 +1,56 @@
+.adminPage {
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .searchBar {
+    margin-bottom: 20px;
+  }
+
+  .searchInput {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  .ordersList {
+    margin-top: 20px;
+  }
+
+  .order {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+
+  .orderId {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  .orderImage {
+    margin-top: 10px;
+  }
+
+  .image {
+    max-width: 150px; /* Adjust the maximum width */
+    max-height: 100px; /* Adjust the maximum height */
+    width: auto; /* Maintain aspect ratio */
+    height: auto; /* Maintain aspect ratio */
+  }
+
+  .cartItems {
+    list-style: none;
+    padding: 0;
+  }
+
+  .cartItems li {
+    margin-bottom: 5px;
+  }
