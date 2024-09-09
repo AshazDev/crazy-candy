@@ -204,24 +204,6 @@ const Checkout = () => {
         {formData.deliveryMethod === 'pickup' && (
           <>
             <div className={styles.formGroup}>
-              <label htmlFor="pickupTime" className={styles.label}>Pickup Time</label>
-              <select
-                id="pickupTime"
-                name="pickupTime"
-                value={pickupTime}
-                onChange={(e) => setPickupTime(e.target.value)}
-                required
-                className={styles.select}
-              >
-                <option value="">Select a time</option>
-                <option value="9:00 AM">9:00 AM</option>
-                <option value="10:00 AM">10:00 AM</option>
-                <option value="11:00 AM">11:00 AM</option>
-                <option value="12:00 PM">12:00 PM</option>
-                <option value="1:00 PM">1:00 PM</option>
-                <option value="2:00 PM">2:00 PM</option>
-                <option value="3:00 PM">3:00 PM</option>
-              </select>
             </div>
 
             <div className={styles.formGroup}>
