@@ -1,7 +1,6 @@
 {
-    "name": "Crazy Candy BH",
-    "short_name": "CrazyCandy",
-    "description": "Order the best candy in Bahrain",
+    "short_name": "Crazy Candy",
+    "name": "Crazy Candy - Your Sweet Shop",
     "icons": [
       {
         "src": "/icons/icon-192x192.png",
@@ -16,6 +15,6 @@
     ],
     "start_url": "/",
     "display": "standalone",
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff"
+    "background_color": "#ffffff",
+    "theme_color": "#ff5722"
   }

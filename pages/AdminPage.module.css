@@ -1,48 +1,81 @@
 .adminPage {
-    padding: 30px; /* Increase padding around the page */
+    padding: 30px; /* Increased padding around the page */
+    max-width: 900px;
+    margin: 0 auto;
   }
 
   .title {
     font-size: 2.5rem; /* Slightly larger title */
-    margin-bottom: 30px; /* Increase space below the title */
+    margin-bottom: 30px; /* Increased space below the title */
+    text-align: center;
   }
 
   .searchBar {
-    margin-bottom: 25px; /* Increase space below the search bar */
+    margin-bottom: 25px; /* Increased space below the search bar */
   }
 
   .searchInput {
     width: 100%;
     padding: 12px; /* Slightly bigger padding */
-    font-size: 1.2rem; /* Increase font size for readability */
+    font-size: 1.2rem; /* Increased font size for readability */
     border: 1px solid #ddd;
     border-radius: 8px; /* Larger border radius */
   }
 
+  .filterOptions {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    gap: 20px; /* Space between filter options */
+    margin-bottom: 25px; /* Space below the filter */
+  }
+
+  .filterOptions label {
+    font-size: 1.1rem; /* Slightly larger label font */
+    display: flex;
+    align-items: center;
+  }
+
+  .filterOptions input[type="checkbox"] {
+    width: 25px; /* Larger checkbox */
+    height: 25px;
+    margin-right: 10px; /* Space between checkbox and label */
+  }
+
+  .filterOptions select {
+    padding: 5px;
+    font-size: 1.1rem; /* Slightly larger font size */
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 200px; /* Fixed width for better alignment */
+  }
+
   .ordersList {
-    margin-top: 25px; /* Increase space above the orders list */
+    display: flex;
+    flex-direction: column;
+    margin-top: 25px; /* Space above the orders list */
   }
 
   .order {
-    padding: 20px; /* Increase padding around each order */
+    padding: 20px; /* Increased padding around each order */
     border: 1px solid #ddd;
     border-radius: 10px; /* Larger border radius */
     margin-bottom: 20px; /* More space between orders */
+    background-color: #f9f9f9;
   }
 
   .orderId {
     font-size: 1.4rem; /* Slightly larger font for order IDs */
     font-weight: bold;
-    margin-bottom: 10px; /* Add space below the order ID */
+    margin-bottom: 10px; /* Space below the order ID */
   }
 
   .orderImage {
-    margin-top: 15px; /* Increase space above the image */
+    margin-top: 15px; /* Space above the image */
   }
 
-  .image {
-    max-width: 170px; /* Adjust the maximum width */
-    max-height: 120px; /* Adjust the maximum height */
+  .orderImage img {
+    max-width: 170px; /* Adjust maximum width */
+    max-height: 120px; /* Adjust maximum height */
     width: auto; /* Maintain aspect ratio */
     height: auto; /* Maintain aspect ratio */
   }
@@ -50,23 +83,23 @@
   .cartItems {
     list-style: none;
     padding: 0;
-    margin-top: 15px; /* Add space between the list and other content */
+    margin-top: 15px; /* Space between list and other content */
   }
 
   .cartItems li {
-    margin-bottom: 10px; /* Increase spacing between items */
+    margin-bottom: 10px; /* Space between items */
     display: flex;
-    align-items: center; /* Vertically align items with the checkbox */
+    align-items: center; /* Vertically align items with checkbox */
+    justify-content: space-between;
   }
 
-  /* Styling for checkboxes */
   .cartItems input[type="checkbox"] {
     appearance: none;
-    width: 25px; /* Make the checkbox larger */
-    height: 25px; /* Increase height to match width */
-    margin-right: 15px; /* Increase space between checkbox and item */
+    width: 25px; /* Larger checkbox */
+    height: 25px; /* Larger height to match width */
+    margin-right: 15px; /* Space between checkbox and item */
     border: 2px solid #ddd;
-    border-radius: 5px; /* Larger border radius for rounded effect */
+    border-radius: 5px; /* Rounded effect */
     cursor: pointer;
     position: relative;
     outline: none;
@@ -96,21 +129,53 @@
     border-color: #aaa; /* Darker border on hover */
   }
 
-  /* Adjust overall spacing for the fulfilled orders filter */
-  .filterOptions {
-    margin-bottom: 25px; /* Add space below the filter */
-    display: flex;
-    align-items: center; /* Align the checkbox with the label */
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .filterOptions {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .filterOptions select {
+      width: 100%;
+    }
+  }
+  /* AdminPage.module.css */
+
+/* Style for buttons */
+.button {
+    padding: 10px 20px; /* Add padding for button size */
+    font-size: 16px; /* Increase font size for readability */
+    color: #fff; /* Text color */
+    background-color: #007bff; /* Primary button color */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effect */
+    margin-right: 10px; /* Add spacing between buttons */
   }
 
-  .filterOptions label {
-    font-size: 1.1rem; /* Slightly larger label font */
-    display: flex;
-    align-items: center;
+  /* Hover effect for buttons */
+  .button:hover {
+    background-color: #0056b3; /* Darker color on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
   }
 
-  .filterOptions input[type="checkbox"] {
-    width: 25px; /* Make the filter checkbox bigger */
-    height: 25px;
-    margin-right: 10px; /* Add space between the checkbox and label */
+  /* Add spacing above and below buttons */
+  .buttonContainer {
+    margin-top: 50px; /* Add space above the button container */
+    margin-bottom: 20px; /* Add space below the button container */
+    display: flex; /* Align buttons in a row */
+    gap: 10px; /* Add space between buttons */
+  }
+  .orderButtons {
+    margin-top: 20px; /* Adjust space as needed */
+  }
+
+  /* Update button container style for better spacing */
+  .buttonContainer {
+    margin-top: 20px; /* Add space above the button container */
+    margin-bottom: 20px; /* Add space below the button container */
+    display: flex; /* Align buttons in a row */
+    gap: 10px; /* Add space between buttons */
   }

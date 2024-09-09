@@ -20,6 +20,7 @@ const OrderConfirmation = () => {
     <div className={styles.confirmationPage}>
       <h1 className={styles.title}>Order Confirmation</h1>
       <p className={styles.confirmationText}>Thank you, {name}! Your order has been placed successfully.</p>
+      <p className={styles.confirmationText}>You will be emailed when your order is out for delivery or is ready to pick up</p>
       <div className={styles.orderDetails}>
         <p className={styles.confirmationText}><strong>Order Number:</strong> {orderId}</p>
         <p className={styles.confirmationText}><strong>Total Amount:</strong> BD{total}</p>

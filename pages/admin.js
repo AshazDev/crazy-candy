@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../lib/firebase';
-import { collection, getDocs, updateDoc, doc } from 'firebase/firestore'; // Add updateDoc and doc for updating items
+import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
 import styles from './AdminPage.module.css'; // Import CSS module
 import AdminAuth from '../components/AdminAuth'; // Adjust the path as needed
 
@@ -9,6 +9,7 @@ const AdminPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [showFulfilled, setShowFulfilled] = useState(false); // New state for fulfilled orders
+  const [deliveryMethodFilter, setDeliveryMethodFilter] = useState('all'); // State for filtering by delivery method
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -39,8 +40,13 @@ const AdminPage = () => {
       results = results.filter(order => !order.isFulfilled);
     }
 
+    // Filter by delivery method (pickup, delivery, or all)
+    if (deliveryMethodFilter !== 'all') {
+      results = results.filter(order => order.deliveryMethod === deliveryMethodFilter);
+    }
+
     setFilteredOrders(results);
-  }, [searchQuery, orders, showFulfilled]);
+  }, [searchQuery, orders, showFulfilled, deliveryMethodFilter]);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -48,6 +54,10 @@ const AdminPage = () => {
 
   const handleFulfilledChange = (e) => {
     setShowFulfilled(e.target.checked); // Update the checkbox state
+  };
+
+  const handleDeliveryMethodChange = (e) => {
+    setDeliveryMethodFilter(e.target.value); // Update the delivery method filter
   };
 
   // Function to toggle the fulfilled status of an item
@@ -75,6 +85,39 @@ const AdminPage = () => {
     }
   };
 
+  const handleSendEmail = async (order, emailType) => {
+    const apiUrl = emailType === 'pickup' ? '/api/sendPickupEmail' : '/api/sendDeliveryEmail';
+    const subject = emailType === 'pickup'
+      ? 'Your Order is Ready for Pickup'
+      : 'Your Order is Out for Delivery';
+
+    const message = `Dear ${order.name},\n\nYour order with ID ${order.id} is ${emailType === 'pickup' ? 'ready for pickup' : 'out for delivery'}.`;
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: order.email,
+          subject,
+          message,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text(); // Read error message
+        throw new Error(`Network response was not ok. ${errorText}`);
+      }
+
+      const data = await response.json();
+      console.log('Email sent successfully:', data);
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
+  };
+
   return (
     <AdminAuth>
       <div className={styles.adminPage}>
@@ -99,6 +142,13 @@ const AdminPage = () => {
             />
             Show Fulfilled Orders
           </label>
+          <label>
+            <select value={deliveryMethodFilter} onChange={handleDeliveryMethodChange}>
+              <option value="all">All</option>
+              <option value="pickup">Pickup</option>
+              <option value="delivery">Delivery</option>
+            </select>
+          </label>
         </div>
 
         <div className={styles.ordersList}>
@@ -110,7 +160,7 @@ const AdminPage = () => {
               <p><strong>Email:</strong> {order.email}</p>
               <p><strong>Address:</strong> {order.address}</p>
               <p><strong>Payment Method:</strong> {order.paymentMethod}</p>
-              <p><strong>Delivery Method:</strong> {order.deliveryMethod === 'pickup' ? 'Pickup' : 'Delivery'}</p> {/* New delivery method field */}
+              <p><strong>Delivery Method:</strong> {order.deliveryMethod === 'pickup' ? 'Pickup' : 'Delivery'}</p>
 
               {order.paymentMethod === 'benefit' && order.imageUrl && (
                 <div className={styles.orderImage}>
@@ -154,6 +204,27 @@ const AdminPage = () => {
               <p>
                 <strong>Status:</strong> {order.isFulfilled ? 'Fulfilled' : 'Pending'}
               </p>
+
+              <div className={styles.orderButtons}> {/* Add this wrapper for buttons */}
+                <div className={styles.buttonContainer}>
+                  {order.deliveryMethod === 'pickup' && !order.isFulfilled && (
+                    <button
+                      onClick={() => handleSendEmail(order, 'pickup')}
+                      className={styles.button} // Apply button class
+                    >
+                      Send Pickup Email
+                    </button>
+                  )}
+                  {order.deliveryMethod === 'delivery' && !order.isFulfilled && (
+                    <button
+                      onClick={() => handleSendEmail(order, 'delivery')}
+                      className={styles.button} // Apply button class
+                    >
+                      Send Delivery Email
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           ))}
         </div>
