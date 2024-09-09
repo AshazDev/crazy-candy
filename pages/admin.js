@@ -110,6 +110,7 @@ const AdminPage = () => {
               <p><strong>Email:</strong> {order.email}</p>
               <p><strong>Address:</strong> {order.address}</p>
               <p><strong>Payment Method:</strong> {order.paymentMethod}</p>
+              <p><strong>Delivery Method:</strong> {order.deliveryMethod === 'pickup' ? 'Pickup' : 'Delivery'}</p> {/* New delivery method field */}
 
               {order.paymentMethod === 'benefit' && order.imageUrl && (
                 <div className={styles.orderImage}>

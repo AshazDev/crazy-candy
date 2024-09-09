@@ -6,6 +6,7 @@ import { collection, addDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import styles from './Checkout.module.css';
 import { urlFor } from '../lib/client';
+import MapEmbed from '../components/MapEmbed';
 
 const storage = getStorage();
 
@@ -17,12 +18,15 @@ const Checkout = () => {
     email: '',
     address: '',
     paymentMethod: 'cash',
+    deliveryMethod: 'pickup', // Added deliveryMethod
   });
   const [image, setImage] = useState(null);
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [cartVisible, setCartVisible] = useState(true);
   const [loading, setLoading] = useState(false); // Add loading state
+  const [deliveryCost, setDeliveryCost] = useState(2); // Delivery cost
+  const [pickupAddress, setPickupAddress] = useState(''); // Pickup address
 
   useEffect(() => {
     if (router.query.cartItems) {
@@ -35,6 +39,15 @@ const Checkout = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    // Handle changes to delivery method and adjust total
+    if (name === 'deliveryMethod') {
+      if (value === 'pickup') {
+        setTotal(parseFloat(router.query.totalPrice)); // Waive delivery cost for pickup
+      } else {
+        setTotal(parseFloat(router.query.totalPrice) + deliveryCost); // Add delivery cost for delivery
+      }
+    }
   };
 
   const handleImageChange = (e) => {
@@ -68,15 +81,31 @@ const Checkout = () => {
       email: formData.email,
       address: formData.address,
       paymentMethod: formData.paymentMethod,
+      deliveryMethod: formData.deliveryMethod,
       items,
       total,
       createdAt: new Date(),
       imageUrl: uploadedImageUrl,
+      pickupAddress: formData.deliveryMethod === 'pickup' ? pickupAddress : '', // Add pickup address if pickup is selected
     };
 
     try {
+      // Save the order in Firestore
       const ordersCollection = collection(db, 'orders');
       const docRef = await addDoc(ordersCollection, orderData);
+
+      // Send confirmation email via API route
+      await fetch('/api/sendEmail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          total,
+          items,
+        }),
+      });
+
       toast.success('Order placed successfully!');
 
       setCartVisible(false);
@@ -154,6 +183,28 @@ const Checkout = () => {
             <option value="benefit">Benefit Pay (+973 3964 1454)</option>
           </select>
         </div>
+
+        <div className={styles.formGroup}>
+          <label htmlFor="deliveryMethod" className={styles.label}>Delivery Method</label>
+          <select
+            id="deliveryMethod"
+            name="deliveryMethod"
+            value={formData.deliveryMethod}
+            onChange={handleChange}
+            required
+            className={styles.select}
+          >
+            <option value="pickup">Pickup</option>
+            <option value="delivery">Home Delivery (BD{deliveryCost})</option>
+          </select>
+        </div>
+
+        {formData.deliveryMethod === 'pickup' && (
+          <div className={styles.formGroup}>
+            <MapEmbed/>
+          </div>
+        )}
+
         {formData.paymentMethod === 'benefit' && (
           <div className={styles.formGroup}>
             <label htmlFor="image" className={styles.label}>Upload Benefit Image</label>
