@@ -6,7 +6,8 @@ export default async function sendEmail(req, res) {
     const { name, email, total, items } = req.body;
 
     const transporter = nodemailer.createTransport({
-      service: 'gmail', // or another email service provider
+        port: 587,
+        host: "smtp.mail.me.com",
       auth: {
         user: process.env.EMAIL_USER, // Set your email in environment variables
         pass: process.env.EMAIL_PASS, // Set your email password in environment variables
