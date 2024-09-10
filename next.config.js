@@ -1,15 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
-    async redirects() {
-      return [
-        {
-          source: '/checkout',
-          destination: '/',
-          permanent: true,
-        },
-      ];
-    },
     async headers() {
       return [
         {

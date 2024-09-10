@@ -22,12 +22,8 @@ const Cart = () => {
   };
 
   const handleQuantityChange = (item, action) => {
-    const newQuantity = action === 'inc' ? item.quantity + 1 : item.quantity - 1;
-
-    if (newQuantity <= 0) {
+    if (action === 'dec' && item.quantity <= 1) {
       onRemove(item);
-    } else if (newQuantity > item.stock) {
-      alert('Cannot add more than available stock.');
     } else {
       toggleCartItemQuantity(item._id, action);
     }
