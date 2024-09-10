@@ -120,6 +120,9 @@ const Checkout = () => {
     }
   };
 
+  // Disable submit button if payment method is benefit and no image is uploaded
+  const isSubmitDisabled = loading || (formData.paymentMethod === 'benefit' && !image);
+
   return (
     <div className={styles.checkoutPage}>
       <h1 className={styles.title}>Checkout</h1>
@@ -252,7 +255,7 @@ const Checkout = () => {
           </>
         )}
 
-        <button type="submit" className={styles.submitButton} disabled={loading}>
+        <button type="submit" className={styles.submitButton} disabled={isSubmitDisabled}>
           {loading ? 'Submitting...' : 'Submit Order'}
         </button>
       </form>

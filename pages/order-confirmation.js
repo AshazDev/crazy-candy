@@ -50,7 +50,7 @@ const OrderConfirmation = () => {
 
       <p className={styles.confirmationText}>If you have any questions, please reach out to our support team.</p>
       <p className={styles.confirmationText}>Phone: +973 38233311</p>
-      <p className={styles.confirmationText}>Email: crazycandybahrain@gmail.com</p>
+      <p className={styles.confirmationText}>Email: crazycandybahrain@icloud.com</p>
       <p className={styles.confirmationText}>Instagram: @crazy_candy_bh</p>
     </div>
   );
