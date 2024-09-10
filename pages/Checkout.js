@@ -175,19 +175,24 @@ const Checkout = () => {
           ></textarea>
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="paymentMethod" className={styles.label}>Payment Method</label>
-          <select
-            id="paymentMethod"
-            name="paymentMethod"
-            value={formData.paymentMethod}
-            onChange={handleChange}
-            required
-            className={styles.select}
-          >
-            <option value="cash">Cash on Delivery</option>
-            <option value="benefit">Benefit Pay (+973 3964 1454)</option>
-          </select>
-        </div>
+            <label htmlFor="paymentMethod" className={styles.label}>Payment Method</label>
+            <select
+                id="paymentMethod"
+                name="paymentMethod"
+                value={formData.paymentMethod}
+                onChange={handleChange}
+                required
+                className={styles.select}
+            >
+                <option value="cash">Cash on Delivery</option>
+                <option value="benefit">Benefit Pay (Send to +973 3964 1454)</option>
+            </select>
+            {formData.paymentMethod === 'benefit' && (
+                <p className={styles.paymentNote}>
+                Please send the payment to the number <strong>+973 3964 1454</strong> and upload the transaction image below.
+                </p>
+            )}
+            </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="deliveryMethod" className={styles.label}>Delivery Method</label>
