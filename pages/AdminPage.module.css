@@ -147,7 +147,7 @@
     padding: 10px 20px; /* Add padding for button size */
     font-size: 16px; /* Increase font size for readability */
     color: #fff; /* Text color */
-    background-color: #007bff; /* Primary button color */
+    background-color: #7ab3be; /* Primary button color */
     border: none; /* Remove border */
     border-radius: 4px; /* Rounded corners */
     cursor: pointer; /* Pointer cursor on hover */
@@ -157,7 +157,6 @@
 
   /* Hover effect for buttons */
   .button:hover {
-    background-color: #0056b3; /* Darker color on hover */
     transform: scale(1.05); /* Slightly enlarge button on hover */
   }
 

@@ -811,3 +811,78 @@ input{
     color: red;
 }
 }
+/* Targeting iPhone SE (1st and 2nd Gen) */
+@media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 568px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+  .cart-wrapper,
+  .cart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .product-container {
+    width: 100%;
+    max-width: 400px; /* Adjust max-width for smaller screens */
+  }
+
+  .product {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+
+  .cart-product-image {
+    max-width: 80px; /* Smaller image size for small screens */
+    margin-right: 10px;
+  }
+
+  .item-desc {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+/* Targeting iPhone 12 Pro */
+@media only screen
+  and (min-device-width: 390px)
+  and (max-device-width: 844px)
+  and (-webkit-min-device-pixel-ratio: 3) {
+
+  .cart-wrapper,
+  .cart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .product-container {
+    width: 100%;
+    max-width: 600px; /* Adjust max-width for larger screens */
+  }
+
+  .product {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .cart-product-image {
+    max-width: 100px; /* Larger image size for bigger screens */
+    margin-right: 15px;
+  }
+
+  .item-desc {
+    flex: 1;
+    text-align: center;
+  }
+}
