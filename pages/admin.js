@@ -128,7 +128,7 @@ const AdminPage = () => {
       ? 'Your Order is Ready for Pickup'
       : 'Your Order is Out for Delivery';
 
-    const message = `Dear ${order.name},\n\nYour order with ID ${order.id} is ${emailType === 'pickup' ? 'ready for pickup' : 'out for delivery'}.`;
+    const message = `Dear ${order.name},\n\nYour order with ID ${order.id} is ${emailType === 'pickup' ? 'ready for pickup, please pickup your order from here: https://maps.app.goo.gl/NWWbGbfD6tsr51gT6' : 'out for delivery'}.`;
 
     try {
       const response = await fetch(apiUrl, {

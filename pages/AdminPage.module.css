@@ -261,11 +261,3 @@
     font-size: 24px; /* Larger font for better visibility */
     margin: 5px 0;
   }
-
-  @media (max-width: 768px) {
-    .analyticsCards {
-      grid-template-columns: repeat(2, 1fr); /* Two columns on mobile */
-      grid-template-rows: repeat(2, auto); /* Two rows on mobile */
-      gap: 20px;
-    }
-  }
