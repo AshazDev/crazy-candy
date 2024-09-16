@@ -13,7 +13,7 @@ const AdminPage = () => {
   const [orders, setOrders] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredOrders, setFilteredOrders] = useState([]);
-  const [fulfilledFilter, setFulfilledFilter] = useState('all'); // Dropdown for filtering
+  const [showFulfilled, setShowFulfilled] = useState(false);
   const [deliveryMethodFilter, setDeliveryMethodFilter] = useState('all');
   const [totalOrdersToday, setTotalOrdersToday] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
@@ -24,46 +24,50 @@ const AdminPage = () => {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const ordersCollection = collection(db, 'orders');
-      const orderSnapshot = await getDocs(ordersCollection);
-      const ordersList = orderSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setOrders(ordersList);
-      setFilteredOrders(ordersList);
+      try {
+        const ordersCollection = collection(db, 'orders');
+        const orderSnapshot = await getDocs(ordersCollection);
+        const ordersList = orderSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setOrders(ordersList);
+        setFilteredOrders(ordersList);
 
-      // Analytics
-      const now = new Date();
-      const startOfDay = new Date(now.setHours(0, 0, 0, 0));
+        // Analytics
+        const now = new Date();
+        const startOfDay = new Date(now.setHours(0, 0, 0, 0));
 
-      const todayOrders = ordersList.filter(order => {
-        const orderDate = order.createdAt ? new Date(order.createdAt.seconds * 1000) : null;
-        return orderDate && orderDate >= startOfDay;
-      });
+        const todayOrders = ordersList.filter(order => {
+          const orderDate = order.createdAt ? new Date(order.createdAt.seconds * 1000) : null;
+          return orderDate && orderDate >= startOfDay;
+        });
 
-      setTotalOrdersToday(todayOrders.length);
-      setTotalRevenue(ordersList.reduce((acc, order) => acc + (order.total || 0), 0));
+        setTotalOrdersToday(todayOrders.length);
+        setTotalRevenue(ordersList.reduce((acc, order) => acc + (order.total || 0), 0));
 
-      // Prepare data for the graph: Orders per day
-      const ordersGroupedByDate = ordersList.reduce((acc, order) => {
-        const orderDate = order.createdAt ? new Date(order.createdAt.seconds * 1000).toLocaleDateString() : 'Unknown';
-        if (!acc[orderDate]) {
-          acc[orderDate] = 0;
-        }
-        acc[orderDate] += 1;
-        return acc;
-      }, {});
+        // Prepare data for the graph: Orders per day
+        const ordersGroupedByDate = ordersList.reduce((acc, order) => {
+          const orderDate = order.createdAt ? new Date(order.createdAt.seconds * 1000).toLocaleDateString() : 'Unknown';
+          if (!acc[orderDate]) {
+            acc[orderDate] = 0;
+          }
+          acc[orderDate] += 1;
+          return acc;
+        }, {});
 
-      const dates = Object.keys(ordersGroupedByDate);
-      const orderCounts = Object.values(ordersGroupedByDate);
+        const dates = Object.keys(ordersGroupedByDate);
+        const orderCounts = Object.values(ordersGroupedByDate);
 
-      setOrderDates(dates);
-      setOrderData(orderCounts);
+        setOrderDates(dates);
+        setOrderData(orderCounts);
 
-      // Calculate pending orders
-      setPendingPickupOrders(ordersList.filter(order => order.deliveryMethod === 'pickup' && !order.isFulfilled).length);
-      setPendingDeliveryOrders(ordersList.filter(order => order.deliveryMethod === 'delivery' && !order.isFulfilled).length);
+        // Calculate pending orders
+        setPendingPickupOrders(ordersList.filter(order => order.deliveryMethod === 'pickup' && !order.isFulfilled).length);
+        setPendingDeliveryOrders(ordersList.filter(order => order.deliveryMethod === 'delivery' && !order.isFulfilled).length);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
     };
 
     fetchOrders();
@@ -71,15 +75,15 @@ const AdminPage = () => {
 
   useEffect(() => {
     let results = orders.filter(order =>
-      order.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.id.toLowerCase().includes(searchQuery.toLowerCase())
+      (order.name?.toLowerCase().includes(searchQuery.toLowerCase()) || false) ||
+      (order.email?.toLowerCase().includes(searchQuery.toLowerCase()) || false) ||
+      (order.id?.toLowerCase().includes(searchQuery.toLowerCase()) || false)
     );
 
-    if (fulfilledFilter !== 'all') {
-      results = fulfilledFilter === 'fulfilled'
-        ? results.filter(order => order.isFulfilled)
-        : results.filter(order => !order.isFulfilled);
+    if (showFulfilled) {
+      results = results.filter(order => order.isFulfilled);
+    } else {
+      results = results.filter(order => !order.isFulfilled);
     }
 
     if (deliveryMethodFilter !== 'all') {
@@ -87,14 +91,14 @@ const AdminPage = () => {
     }
 
     setFilteredOrders(results);
-  }, [searchQuery, orders, fulfilledFilter, deliveryMethodFilter]);
+  }, [searchQuery, orders, showFulfilled, deliveryMethodFilter]);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
   const handleFulfilledChange = (e) => {
-    setFulfilledFilter(e.target.value);
+    setShowFulfilled(e.target.checked);
   };
 
   const handleDeliveryMethodChange = (e) => {
@@ -115,10 +119,14 @@ const AdminPage = () => {
       order.isFulfilled = allItemsFulfilled;
 
       const orderDocRef = doc(db, 'orders', orderId);
-      await updateDoc(orderDocRef, {
-        items: order.items,
-        isFulfilled: allItemsFulfilled,
-      });
+      try {
+        await updateDoc(orderDocRef, {
+          items: order.items,
+          isFulfilled: allItemsFulfilled,
+        });
+      } catch (error) {
+        console.error('Error updating order:', error);
+      }
     }
   };
 
@@ -128,7 +136,7 @@ const AdminPage = () => {
       ? 'Your Order is Ready for Pickup'
       : 'Your Order is Out for Delivery';
 
-    const message = `Dear ${order.name},\n\nYour order with ID ${order.id} is ${emailType === 'pickup' ? 'ready for pickup, please pickup your order from here: https://maps.app.goo.gl/NWWbGbfD6tsr51gT6' : 'out for delivery'}.`;
+    const message = `Dear ${order.name},\n\nYour order with ID ${order.id} is ${emailType === 'pickup' ? 'ready for pickup, please pick it up from here: https://maps.app.goo.gl/NWWbGbfD6tsr51gT6' : 'out for delivery'}.`;
 
     try {
       const response = await fetch(apiUrl, {
@@ -197,17 +205,16 @@ const AdminPage = () => {
         </div>
 
         <div className={styles.filterOptions}>
-          <label className={styles.label}>
-            <span>Show Orders: </span>
-            <select value={fulfilledFilter} onChange={handleFulfilledChange} className={styles.select}>
-              <option value="all">All</option>
-              <option value="fulfilled">Fulfilled</option>
-              <option value="unfulfilled">Unfulfilled</option>
-            </select>
+          <label>
+            <input
+              type="checkbox"
+              checked={showFulfilled}
+              onChange={handleFulfilledChange}
+              className={styles.checkbox}
+            />
+            Show Fulfilled Orders
           </label>
-
-          <label className={styles.label}>
-            <span>Delivery Method: </span>
+          <label>
             <select value={deliveryMethodFilter} onChange={handleDeliveryMethodChange} className={styles.select}>
               <option value="all">All</option>
               <option value="pickup">Pickup</option>
@@ -246,43 +253,39 @@ const AdminPage = () => {
         </div>
 
         <div className={styles.ordersList}>
-          {filteredOrders.length > 0 ? (
-            filteredOrders.map(order => (
-              <div key={order.id} className={styles.orderCard}>
-                <h3>Order ID: {order.id}</h3>
-                <p>Name: {order.name}</p>
-                <p>Email: {order.email}</p>
-                <p>Total: BD {order.total.toFixed(2)}</p>
-                <p>Fulfilled: {order.isFulfilled ? 'Yes' : 'No'}</p>
-                <p>Delivery Method: {order.deliveryMethod}</p>
-
-                <button
-                  className={styles.sendEmailButton}
-                  onClick={() => handleSendEmail(order, order.deliveryMethod)}
-                >
-                  {order.deliveryMethod === 'pickup' ? 'Send Pickup Email' : 'Send Delivery Email'}
-                </button>
-
-                {order.items.map((item, index) => (
-                  <div key={index} className={styles.orderItem}>
-                    <p>{item.name}</p>
-                    <p>Quantity: {item.quantity}</p>
-                    <label className={styles.checkboxLabel}>
-                        <input
-                            type="checkbox"
-                            className={styles.checkbox}
-                            checked={item.fulfilled}
-                            onChange={() => handleItemFulfilledChange(order.id, index)}
-                        />
-                        Fulfilled
-                        </label>
-                  </div>
-                ))}
-              </div>
-            ))
-          ) : (
-            <p>No orders found.</p>
-          )}
+          {filteredOrders.length === 0 && <p>No orders found.</p>}
+          {filteredOrders.map((order) => (
+            <div className={styles.orderCard} key={order.id}>
+              <h3>Order ID: {order.id}</h3>
+              <p>Name: {order.name}</p>
+              <p>Email: {order.email}</p>
+              <p>Delivery Method: {order.deliveryMethod}</p>
+              <p>Total: BD {order.total?.toFixed(2) || 0}</p>
+              <p>Status: {order.isFulfilled ? 'Fulfilled' : 'Not Fulfilled'}</p>
+              {order.items.map((item, index) => (
+                <div className={styles.orderItem} key={index}>
+                  <p>Product: {item.productName}</p>
+                  <p>Quantity: {item.quantity}</p>
+                  <p>Price: BD {item.price?.toFixed(2) || 0}</p>
+                  <label className={styles.checkboxLabel}>
+                    <input
+                      type="checkbox"
+                      checked={item.fulfilled}
+                      onChange={() => handleItemFulfilledChange(order.id, index)}
+                      className={styles.checkbox}
+                    />
+                    Fulfilled
+                  </label>
+                </div>
+              ))}
+              <button
+                className={styles.sendEmailButton}
+                onClick={() => handleSendEmail(order, order.deliveryMethod === 'pickup' ? 'pickup' : 'delivery')}
+              >
+                Send {order.deliveryMethod === 'pickup' ? 'Pickup' : 'Delivery'} Email
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </AdminAuth>
