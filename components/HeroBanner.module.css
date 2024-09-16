@@ -1,0 +1,95 @@
+.heroBannerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px; /* Space from the edges of the box */
+    background-color: #d6a1ac;
+    height: auto; /* Adjust height as needed */
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px; /* Rounded corners on desktop */
+  }
+
+  .heroBannerText {
+    color: #fff;
+    max-width: 50%;
+    padding: 0 20px; /* Space from edges inside the text container */
+  }
+
+  .smallText {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+
+  .midText {
+    font-size: 48px;
+    margin-bottom: 10px;
+  }
+
+  .largeText1 {
+    font-size: 96px; /* Massive text */
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .heroBannerButton {
+    background-color: #fff;
+    color: #d6a1ac;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 30px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .heroBannerButton:hover {
+    background-color: #d6a1ac;
+    color: #fff;
+  }
+
+  .heroBannerImage {
+    max-width: 50%;
+    height: 500px;
+    object-fit: cover;
+    padding: 0 20px; /* Space from edges inside the image container */
+  }
+
+  @media (max-width: 768px) {
+    .heroBannerContainer {
+      flex-direction: column;
+      align-items: center; /* Center text and buttons horizontally */
+      text-align: center;
+      height: auto; /* Allow height to adjust based on content */
+      padding: 20px; /* Add padding on mobile */
+      border-radius: 20;
+    }
+
+    .heroBannerText {
+      max-width: 100%; /* Allow text to use full width */
+      padding: 20px; /* Add padding on mobile */
+      margin-top: 20px; /* Space from the top of the screen */
+    }
+
+    .heroBannerImage {
+      display: none; /* Hide image on mobile */
+    }
+
+    .smallText {
+      font-size: 24px; /* Adjust font size for mobile */
+    }
+
+    .midText {
+      font-size: 32px; /* Adjust font size for mobile */
+    }
+
+    .largeText1 {
+      font-size: 64px; /* Adjust font size for mobile */
+    }
+
+    .heroBannerButton {
+      font-size: 20px;
+      padding: 12px 24px;
+      margin-top: 20px; /* Space from the text */
+    }
+  }

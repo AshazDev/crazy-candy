@@ -1,27 +1,28 @@
 import React from 'react';
 import Link from 'next/link';
 import { urlFor } from '../lib/client';
+import styles from './HeroBanner.module.css'; // Ensure this path is correct
 
 const HeroBanner = ({ heroBanner }) => {
   return (
-    <div className="hero-banner-container">
-      <div className="hero-banner-text">
-        <p className="beats-solo">{heroBanner.smallText}</p>
-        <h3>{heroBanner.midText}</h3>
-        <h1>{heroBanner.largeText1}</h1>
-        {/* Ensure image is hidden on mobile */}
-        <img src={urlFor(heroBanner.image)} alt="headphones" className="hero-banner-image" />
-        <div className="desc">
-        </div>
-        {/* Button with class for positioning */}
+    <div className={styles.heroBannerContainer}>
+      <div className={styles.heroBannerText}>
+        <p className={styles.smallText}>{heroBanner.smallText}</p>
+        <h3 className={styles.midText}>{heroBanner.midText}</h3>
+        <h1 className={styles.largeText1}>{heroBanner.largeText1}</h1>
         <Link href={`/product/${heroBanner.product}`}>
-          <button type="button" className="hero-banner-button">
+          <button type="button" className={styles.heroBannerButton}>
             {heroBanner.buttonText}
           </button>
         </Link>
       </div>
+      <img
+        src={urlFor(heroBanner.image)}
+        alt="Product"
+        className={styles.heroBannerImage}
+      />
     </div>
-  )
-}
+  );
+};
 
 export default HeroBanner;
