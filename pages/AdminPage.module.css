@@ -1,180 +1,271 @@
 .adminPage {
-    padding: 30px; /* Increased padding around the page */
-    max-width: 900px;
-    margin: 0 auto;
+    padding: 20px;
+    max-width: 1200px; /* Center content on desktop */
+    margin: 0 auto; /* Center content horizontally */
   }
 
   .title {
-    font-size: 2.5rem; /* Slightly larger title */
-    margin-bottom: 30px; /* Increased space below the title */
     text-align: center;
+    margin-bottom: 20px;
   }
 
   .searchBar {
-    margin-bottom: 25px; /* Increased space below the search bar */
+    margin-bottom: 20px;
   }
 
   .searchInput {
     width: 100%;
-    padding: 12px; /* Slightly bigger padding */
-    font-size: 1.2rem; /* Increased font size for readability */
+    padding: 10px;
+    border-radius: 5px;
     border: 1px solid #ddd;
-    border-radius: 8px; /* Larger border radius */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   .filterOptions {
     display: flex;
-    align-items: center; /* Align items vertically */
-    gap: 20px; /* Space between filter options */
-    margin-bottom: 25px; /* Space below the filter */
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
   }
 
   .filterOptions label {
-    font-size: 1.1rem; /* Slightly larger label font */
     display: flex;
     align-items: center;
+    gap: 10px;
+    font-size: 16px;
   }
 
-  .filterOptions input[type="checkbox"] {
-    width: 25px; /* Larger checkbox */
-    height: 25px;
-    margin-right: 10px; /* Space between checkbox and label */
+  .select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: #fff;
   }
 
-  .filterOptions select {
-    padding: 5px;
-    font-size: 1.1rem; /* Slightly larger font size */
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    width: 200px; /* Fixed width for better alignment */
+  .analyticsSection {
+    margin-bottom: 40px;
+  }
+
+  .analyticsCards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2x2 grid */
+    gap: 20px;
+  }
+
+  .analyticsCard {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .graphContainer {
+    margin: 20px 0;
   }
 
   .ordersList {
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
-    margin-top: 25px; /* Space above the orders list */
+    align-items: center; /* Center order cards */
   }
 
-  .order {
-    padding: 20px; /* Increased padding around each order */
-    border: 1px solid #ddd;
-    border-radius: 10px; /* Larger border radius */
-    margin-bottom: 20px; /* More space between orders */
-    background-color: #f9f9f9;
-  }
-
-  .orderId {
-    font-size: 1.4rem; /* Slightly larger font for order IDs */
-    font-weight: bold;
-    margin-bottom: 10px; /* Space below the order ID */
-  }
-
-  .orderImage {
-    margin-top: 15px; /* Space above the image */
-  }
-
-  .orderImage img {
-    max-width: 170px; /* Adjust maximum width */
-    max-height: 120px; /* Adjust maximum height */
-    width: auto; /* Maintain aspect ratio */
-    height: auto; /* Maintain aspect ratio */
-  }
-
-  .cartItems {
-    list-style: none;
-    padding: 0;
-    margin-top: 15px; /* Space between list and other content */
-  }
-
-  .cartItems li {
-    margin-bottom: 10px; /* Space between items */
+  .orderCard {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 800px; /* Control width of order cards */
     display: flex;
-    align-items: center; /* Vertically align items with checkbox */
-    justify-content: space-between;
+    flex-direction: column;
   }
 
-  .cartItems input[type="checkbox"] {
+  .orderCard h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .orderCard p {
+    margin: 10px 0; /* Increased margin for spacing */
+  }
+
+  .orderItem {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    margin-top: 10px;
+  }
+
+  .orderItem p {
+    margin: 5px 0;
+  }
+
+  .sendEmailButton {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #7ab3be;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px 0;
+    text-align: center;
+    transition: background-color 0.3s;
+  }
+
+  .sendEmailButton:hover {
+    background-color: #6a9abf;
+  }
+
+  /* Custom Checkbox Styling */
+  .checkbox {
     appearance: none;
-    width: 25px; /* Larger checkbox */
-    height: 25px; /* Larger height to match width */
-    margin-right: 15px; /* Space between checkbox and item */
+    -webkit-appearance: none;
+    background-color: #fff;
     border: 2px solid #ddd;
-    border-radius: 5px; /* Rounded effect */
+    border-radius: 4px;
+    width: 20px;
+    height: 20px;
     cursor: pointer;
     position: relative;
     outline: none;
-    transition: background-color 0.2s, border-color 0.2s;
   }
 
-  .cartItems input[type="checkbox"]:checked {
-    background-color: #4caf50; /* Green background when checked */
-    border-color: #4caf50;
+  .checkbox:checked {
+    background-color: #7ab3be;
+    border-color: #7ab3be;
   }
 
-  .cartItems input[type="checkbox"]:checked::before {
-    content: '✔'; /* Checkmark */
-    display: block;
-    color: white;
-    font-size: 18px; /* Larger checkmark */
-    text-align: center;
-    line-height: 22px; /* Center the checkmark vertically */
+  .checkbox:checked::before {
+    content: '';
     position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 5px;
+    border: solid white;
+    border-width: 0 0 2px 2px;
+    transform: translate(-50%, -50%) rotate(45deg);
   }
 
-  .cartItems input[type="checkbox"]:hover {
-    border-color: #aaa; /* Darker border on hover */
+  /* Ensure uniform checkbox styling */
+  .checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
-  /* Responsive design */
+  /* Fulfilled Checkbox Styling */
+  .filterOptions label input[type="checkbox"] {
+    margin-right: 8px; /* Add some space between checkbox and label */
+  }
+
   @media (max-width: 768px) {
     .filterOptions {
       flex-direction: column;
-      gap: 10px;
+      align-items: center;
     }
 
-    .filterOptions select {
-      width: 100%;
+    .filterOptions label {
+      margin-bottom: 10px;
     }
   }
-  /* AdminPage.module.css */
-
-/* Style for buttons */
-.button {
-    padding: 10px 20px; /* Add padding for button size */
-    font-size: 16px; /* Increase font size for readability */
-    color: #fff; /* Text color */
-    background-color: #7ab3be; /* Primary button color */
-    border: none; /* Remove border */
-    border-radius: 4px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effect */
-    margin-right: 10px; /* Add spacing between buttons */
+/* Custom Checkbox Styling */
+.checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 6px; /* Rounded corners */
+    width: 24px; /* Larger size */
+    height: 24px; /* Larger size */
+    cursor: pointer;
+    position: relative;
+    outline: none;
+    transition: background-color 0.3s, border-color 0.3s;
   }
 
-  /* Hover effect for buttons */
-  .button:hover {
-    transform: scale(1.05); /* Slightly enlarge button on hover */
+  .checkbox:checked {
+    background-color: #7ab3be;
+    border-color: #7ab3be;
   }
 
-  /* Add spacing above and below buttons */
-  .buttonContainer {
-    margin-top: 50px; /* Add space above the button container */
-    margin-bottom: 20px; /* Add space below the button container */
-    display: flex; /* Align buttons in a row */
-    gap: 10px; /* Add space between buttons */
-  }
-  .orderButtons {
-    margin-top: 20px; /* Adjust space as needed */
+  .checkbox:checked::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    bottom: 50%;
+    width: 12px; /* Size of checkmark */
+    height: 6px; /* Size of checkmark */
+    border: solid white;
+    border-width: 0 0 2px 2px;
+    transform: translate(-50%, -50%) rotate(320deg); /* Correct rotation */
   }
 
-  /* Update button container style for better spacing */
-  .buttonContainer {
-    margin-top: 20px; /* Add space above the button container */
-    margin-bottom: 20px; /* Add space below the button container */
-    display: flex; /* Align buttons in a row */
-    gap: 10px; /* Add space between buttons */
+  .checkbox:focus {
+    border-color: #7ab3be;
+    box-shadow: 0 0 0 2px rgba(122, 179, 190, 0.3);
+  }
+
+  /* Checkbox Label Styling */
+  .checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Space between checkbox and label text */
+    font-size: 16px; /* Font size for the label */
+    color: #333; /* Text color */
+  }
+
+  /* Add styles for better visuals on mobile */
+  @media (max-width: 768px) {
+    .checkbox {
+      width: 28px; /* Larger size for mobile */
+      height: 28px; /* Larger size for mobile */
+    }
+
+    .checkbox:checked::before {
+      width: 16px; /* Larger size of checkmark */
+      height: 8px; /* Larger size of checkmark */
+    }
+  }
+  .analyticsCards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Four columns on desktop */
+    gap: 20px;
+  }
+
+  .analyticsCard {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .analyticsCard h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .analyticsCard p {
+    font-size: 24px; /* Larger font for better visibility */
+    margin: 5px 0;
+  }
+
+  @media (max-width: 768px) {
+    .analyticsCards {
+      grid-template-columns: repeat(2, 1fr); /* Two columns on mobile */
+      grid-template-rows: repeat(2, auto); /* Two rows on mobile */
+      gap: 20px;
+    }
   }
