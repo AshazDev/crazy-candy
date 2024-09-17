@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../lib/firebase';
 import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
-import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
 import AdminAuth from '../components/AdminAuth'; // Adjust the path as needed
 import styles from './AdminPage.module.css'; // Import CSS module
-
-// Register necessary chart components
-ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend);
+import classNames from 'classnames'; // Import classnames library
 
 const AdminPage = () => {
   const [orders, setOrders] = useState([]);
@@ -163,32 +159,6 @@ const AdminPage = () => {
     }
   };
 
-  const lineChartData = {
-    labels: orderDates,
-    datasets: [
-      {
-        label: 'Number of Orders',
-        data: orderData,
-        backgroundColor: 'rgba(153, 102, 255, 0.6)',
-        borderColor: 'rgba(153, 102, 255, 1)',
-        fill: true,
-      },
-    ],
-  };
-
-  const lineChartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Number of Orders Per Day',
-      },
-    },
-  };
-
   return (
     <AdminAuth>
       <div className={styles.adminPage}>
@@ -246,10 +216,6 @@ const AdminPage = () => {
               <p>{pendingDeliveryOrders}</p>
             </div>
           </div>
-
-          <div className={styles.graphContainer}>
-            <Line data={lineChartData} options={lineChartOptions} />
-          </div>
         </div>
 
         <div className={styles.ordersList}>
@@ -264,7 +230,7 @@ const AdminPage = () => {
               <p>Status: {order.isFulfilled ? 'Fulfilled' : 'Not Fulfilled'}</p>
               {order.items.map((item, index) => (
                 <div className={styles.orderItem} key={index}>
-                  <p>Product: {item.productName}</p>
+                  <p>Product: {item.name}</p>
                   <p>Quantity: {item.quantity}</p>
                   <p>Price: BD {item.price?.toFixed(2) || 0}</p>
                   <label className={styles.checkboxLabel}>
@@ -275,15 +241,29 @@ const AdminPage = () => {
                       className={styles.checkbox}
                     />
                     Fulfilled
-                  </label>
+                    </label>
                 </div>
               ))}
-              <button
-                className={styles.sendEmailButton}
-                onClick={() => handleSendEmail(order, order.deliveryMethod === 'pickup' ? 'pickup' : 'delivery')}
-              >
-                Send {order.deliveryMethod === 'pickup' ? 'Pickup' : 'Delivery'} Email
-              </button>
+              <div className={styles.emailButtons}>
+                <button
+                  onClick={() => handleSendEmail(order, 'pickup')}
+                  disabled={order.deliveryMethod !== 'pickup'}
+                  className={classNames(styles.emailButton, {
+                    [styles.disabled]: order.deliveryMethod !== 'pickup'
+                  })}
+                >
+                  Send Pickup Email
+                </button>
+                <button
+                  onClick={() => handleSendEmail(order, 'delivery')}
+                  disabled={order.deliveryMethod !== 'delivery'}
+                  className={classNames(styles.emailButton, {
+                    [styles.disabled]: order.deliveryMethod !== 'delivery'
+                  })}
+                >
+                  Send Delivery Email
+                </button>
+              </div>
             </div>
           ))}
         </div>

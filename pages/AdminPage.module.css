@@ -49,7 +49,7 @@
 
   .analyticsCards {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2x2 grid */
+    grid-template-columns: repeat(4, 1fr); /* Four columns on desktop */
     gap: 20px;
   }
 
@@ -59,6 +59,20 @@
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .analyticsCard h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .analyticsCard p {
+    font-size: 24px; /* Larger font for better visibility */
+    margin: 5px 0;
   }
 
   .graphContainer {
@@ -128,59 +142,6 @@
     -webkit-appearance: none;
     background-color: #fff;
     border: 2px solid #ddd;
-    border-radius: 4px;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    position: relative;
-    outline: none;
-  }
-
-  .checkbox:checked {
-    background-color: #7ab3be;
-    border-color: #7ab3be;
-  }
-
-  .checkbox:checked::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 10px;
-    height: 5px;
-    border: solid white;
-    border-width: 0 0 2px 2px;
-    transform: translate(-50%, -50%) rotate(45deg);
-  }
-
-  /* Ensure uniform checkbox styling */
-  .checkboxLabel {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  /* Fulfilled Checkbox Styling */
-  .filterOptions label input[type="checkbox"] {
-    margin-right: 8px; /* Add some space between checkbox and label */
-  }
-
-  @media (max-width: 768px) {
-    .filterOptions {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .filterOptions label {
-      margin-bottom: 10px;
-    }
-  }
-/* Custom Checkbox Styling */
-.checkbox {
-    appearance: none;
-    -webkit-appearance: none;
-    background-color: #fff;
-    border: 2px solid #ddd;
     border-radius: 6px; /* Rounded corners */
     width: 24px; /* Larger size */
     height: 24px; /* Larger size */
@@ -200,7 +161,6 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    bottom: 50%;
     width: 12px; /* Size of checkmark */
     height: 6px; /* Size of checkmark */
     border: solid white;
@@ -224,6 +184,15 @@
 
   /* Add styles for better visuals on mobile */
   @media (max-width: 768px) {
+    .filterOptions {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .filterOptions label {
+      margin-bottom: 10px;
+    }
+
     .checkbox {
       width: 28px; /* Larger size for mobile */
       height: 28px; /* Larger size for mobile */
@@ -233,36 +202,66 @@
       width: 16px; /* Larger size of checkmark */
       height: 8px; /* Larger size of checkmark */
     }
-  }
-  .analyticsCards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Four columns on desktop */
-    gap: 20px;
-  }
 
-  .analyticsCard {
-    background: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .analyticsCard h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-
-  .analyticsCard p {
-    font-size: 24px; /* Larger font for better visibility */
-    margin: 5px 0;
-  }
-  @media (max-width: 768px) {
     .analyticsCards {
       grid-template-columns: repeat(2, 1fr); /* 2 columns */
     }
+  }
+  .sendEmailButton {
+    display: block;
+    width: 100%;
+    padding: 12px 20px; /* Adjust padding for a more comfortable click area */
+    border: none;
+    border-radius: 8px; /* Rounded corners for a modern look */
+    background-color: #7ab3be; /* Base color for the button */
+    color: #fff; /* Text color */
+    font-size: 16px; /* Readable font size */
+    font-weight: bold; /* Bold text to stand out */
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover and focus states */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+  }
+
+  .sendEmailButton:hover {
+    background-color: #6a9abf; /* Slightly darker color on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+  }
+
+  .sendEmailButton:active {
+    background-color: #5a8da3; /* Even darker color when the button is clicked */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Reset shadow on active state */
+  }
+
+  .sendEmailButton:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 3px rgba(122, 179, 190, 0.5); /* Add focus ring for accessibility */
+  }
+  .emailButtons {
+    margin-top: 1rem;
+  }
+
+  .emailButton {
+    background-color: #7ab3be; /* Button background color */
+    border: none;
+    color: white; /* Button text color */
+    padding: 0.5rem 1rem;
+    margin-right: 0.5rem;
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer;
+    font-size: 0.875rem; /* Font size */
+    transition: background-color 0.3s ease; /* Smooth color transition */
+  }
+
+  .emailButton:hover {
+    background-color: #6899a2; /* Darker shade on hover */
+  }
+
+  .emailButton:disabled {
+    background-color: #b0b0b0; /* Disabled button background color */
+    cursor: not-allowed;
+  }
+
+  .disabled {
+    background-color: #b0b0b0; /* Disabled button background color */
   }
