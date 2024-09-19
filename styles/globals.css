@@ -1217,4 +1217,99 @@ input{
       font-size: 16px;
     }
   }
-  
+  .product-detail-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* Center horizontally */
+    align-items: flex-start; /* Align items at the start */
+    max-width: 1200px; /* Set a maximum width for larger screens */
+    margin: 0 auto; /* Center the container */
+    padding: 20px; /* Padding around the container */
+    width: 100%; /* Full width */
+  }
+
+  .image-container {
+    flex: 1; /* Allow the image container to grow */
+    max-width: 400px; /* Set a maximum width for images */
+    text-align: center; /* Center images within the container */
+    margin-bottom: 20px; /* Space below the image on mobile */
+  }
+
+  .product-detail-desc {
+    flex: 1; /* Allow description to grow */
+    margin-left: 20px; /* Space between image and text */
+    text-align: left; /* Align text to the left */
+    width: 100%; /* Full width for smaller devices */
+  }
+
+  @media (max-width: 768px) {
+    .product-detail-container {
+      flex-direction: column; /* Stack items vertically on mobile */
+      align-items: center; /* Center items horizontally */
+      padding: 10px; /* Adjust padding for mobile */
+      width: 100%; /* Ensure it takes full width */
+      margin: 0; /* Remove margins */
+    }
+
+    .image-container {
+      max-width: 90%; /* Allow image to take more width on mobile */
+      margin-bottom: 10px; /* Space below image */
+    }
+
+    .product-detail-desc {
+      margin-left: 0; /* Remove left margin for mobile */
+      text-align: left; /* Center text on mobile */
+      width: 90%; /* Ensure description takes full width */
+    }
+  }
+  .heroBannerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #d6a1ac;
+    position: relative;
+    width: 100vw; /* Full viewport width */
+    height: auto; /* Adjust based on content */
+    margin: 0; /* Remove margins */
+    padding: 0; /* Remove padding */
+    overflow: hidden;
+  }
+
+  .heroBannerText {
+    color: #fff;
+    max-width: 50%; /* Adjust as needed */
+    padding: 20px; /* Add padding for text */
+    z-index: 1; /* Ensure text is above the image */
+  }
+
+  .heroBannerImage {
+    width: 100%; /* Full width on mobile */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Cover the area */
+    position: absolute; /* Position the image behind the text */
+    top: 0;
+    left: 0;
+    z-index: 0; /* Ensure the image stays behind the text */
+  }
+
+  @media (max-width: 768px) {
+    .heroBannerContainer {
+      flex-direction: column; /* Stack items vertically on mobile */
+      padding: 0; /* Remove padding on mobile */
+      height: auto; /* Adjust height based on content */
+      width: 100%;
+      padding: 0px;
+      margin: 0px;
+      top: 0;
+    }
+
+    .heroBannerText {
+      width: 100%; /* Full width on mobile */
+      text-align: center; /* Center text */
+    }
+
+    .heroBannerImage {
+      width: 100%; /* Ensure image covers full width */
+      height: 100%; /* Cover the container height */
+    }
+  }

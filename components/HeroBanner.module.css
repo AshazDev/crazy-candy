@@ -93,3 +93,35 @@
       margin-top: 20px; /* Space from the text */
     }
   }
+  @media (max-width: 768px) {
+    .heroBannerContainer {
+      height: 400px;  /* Adjust height for mobile */
+      width: 100% !important ;  /* Make sure it spans the entire viewport width */
+      padding: 0 !important;    /* Remove all padding */
+      margin: 0 !important;     /* Remove all margin */
+      border-radius: 0;  /* Remove border rounding on mobile */
+      position: relative;  /* Maintain relative position */
+    }
+
+    .heroBannerText {
+      padding-left: 20px;
+      padding-right: 20px;
+      z-index: 1;   /* Keep text above the image */
+    }
+
+    .largeText1 {
+      font-size: 100px;  /* Adjust text size for mobile */
+    }
+
+    .midText {
+      font-size: 50px;  /* Adjust mid-text size for mobile */
+    }
+
+    .smallText {
+      font-size: 30px;  /* Adjust small-text size for mobile */
+    }
+
+    .heroBannerButton {
+      font-size: 20px;  /* Adjust button size for mobile */
+    }
+  }

@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
-import { AiOutlineMinus, AiOutlinePlus, AiFillStar, AiOutlineStar } from 'react-icons/ai';
+import React, { useState, useEffect } from 'react';
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { client, urlFor } from '../../lib/client';
 import { Product } from '../../components';
 import { useStateContext } from '../../context/StateContext';
+import ProductPageSkeletonLoader from '../../components/ProductPageSkeletonLoader'; // Import the skeleton loader
 
 const ProductDetails = ({ product, products }) => {
-  const { image, name, details, price, stock } = product; // Include stock in the destructuring
   const [index, setIndex] = useState(0);
+  const [loading, setLoading] = useState(true); // loading state
   const { decQty, incQty, qty, onAdd, setShowCart } = useStateContext();
+
+  useEffect(() => {
+    if (product) {
+      setLoading(false); // Set loading to false once product is available
+    }
+  }, [product]);
+
+  if (loading) {
+    return <ProductPageSkeletonLoader />; // Show skeleton loader when loading
+  }
+
+  const { image, name, details, price, stock } = product;
 
   const handleBuyNow = () => {
     if (qty <= stock) {
@@ -38,18 +51,7 @@ const ProductDetails = ({ product, products }) => {
         </div>
 
         <div className="product-detail-desc">
-          <h1>{name}</h1>
-          <div className="reviews">
-            <div>
-              <AiFillStar />
-              <AiFillStar />
-              <AiFillStar />
-              <AiFillStar />
-              <AiOutlineStar />
-            </div>
-            <p>(20)</p>
-          </div>
-          <h4>Details: </h4>
+          <h4>{name}</h4>
           <p>{details}</p>
           <p className="price">BD{price}</p>
           <p className="stock">{stock > 0 ? `In Stock: ${stock}` : 'Out of Stock'}</p>
@@ -100,7 +102,7 @@ const ProductDetails = ({ product, products }) => {
   );
 };
 
-export const getServerSideProps = async ({ params: { slug }}) => {
+export const getServerSideProps = async ({ params: { slug } }) => {
   const query = `*[_type == "product" && slug.current == '${slug}'][0]`;
   const productsQuery = '*[_type == "product"]';
 

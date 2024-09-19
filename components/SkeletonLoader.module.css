@@ -1,0 +1,49 @@
+/* Keyframes for shimmer animation */
+@keyframes shimmer {
+    0% {
+      background-position: -400px 0;
+    }
+    100% {
+      background-position: 400px 0;
+    }
+  }
+
+  .skeletonProductCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px;
+    width: 250px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .skeletonImage, .skeletonText {
+    background: linear-gradient(
+      90deg,
+      #e0e0e0 25%,
+      #f0f0f0 50%,
+      #e0e0e0 75%
+    );
+    background-size: 400px 100%;
+    animation: shimmer 1.5s infinite linear;
+    border-radius: 8px;
+  }
+
+  .skeletonImage {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+  }
+
+  .skeletonText {
+    width: 180px;
+    height: 20px;
+    margin-top: 10px;
+  }
+
+  .skeletonText:last-child {
+    width: 120px; /* Adjust the width of the second text line for variety */
+  }
