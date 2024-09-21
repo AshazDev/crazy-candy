@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast';
 
 const Context = createContext();
 
-export const StateContext = ({ children }) => {
+export const StateProvider = ({ children }) => { // Change this to StateProvider
   const [showCart, setShowCart] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -24,7 +24,8 @@ export const StateContext = ({ children }) => {
         if (cartProduct._id === product._id) return {
           ...cartProduct,
           quantity: cartProduct.quantity + quantity
-        }
+        };
+        return cartProduct; // Ensure to return the cartProduct
       });
       setCartItems(updatedCartItems);
     } else {
@@ -97,4 +98,11 @@ export const StateContext = ({ children }) => {
   );
 };
 
-export const useStateContext = () => useContext(Context);
+// Hook to use the context
+export const useStateContext = () => {
+  const context = useContext(Context);
+  if (!context) {
+    throw new Error('useStateContext must be used within a StateProvider');
+  }
+  return context;
+};

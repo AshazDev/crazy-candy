@@ -7,7 +7,6 @@
     height: auto; /* Adjust height as needed */
     position: relative;
     overflow: hidden;
-    border-radius: 20px; /* Rounded corners on desktop */
   }
 
   .heroBannerText {

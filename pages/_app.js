@@ -1,30 +1,27 @@
-import React, { useEffect } from 'react';
-import { Toaster } from 'react-hot-toast';
-import { Layout } from '../components';
+import React, { useEffect, useState } from 'react';
+import { StateProvider } from '../context/StateContext';
+import SplashScreen from '../components/SplashScreen';
+import Navbar from '../components/Navbar'; // Ensure correct import
 import '../styles/globals.css';
-import { StateContext } from '../context/StateContext';
 
 function MyApp({ Component, pageProps }) {
+  const [showSplash, setShowSplash] = useState(true);
+
   useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        const swUrl = `/service-worker.js`;
-        navigator.serviceWorker.register(swUrl).then((registration) => {
-          console.log('Service Worker registered:', registration);
-        }).catch((error) => {
-          console.error('Service Worker registration failed:', error);
-        });
-      });
-    }
+    const timer = setTimeout(() => setShowSplash(false), 3000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
-    <StateContext>
-      <Layout>
-        <Toaster />
-        <Component {...pageProps} />
-      </Layout>
-    </StateContext>
+    <StateProvider>
+      {showSplash && <SplashScreen />}
+      {!showSplash && (
+        <>
+          <Navbar /> {/* Navbar for both mobile and desktop */}
+          <Component {...pageProps} />
+        </>
+      )}
+    </StateProvider>
   );
 }
 

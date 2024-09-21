@@ -2,11 +2,12 @@
     display: flex;
     justify-content: center;
     margin: 20px 0;
+    margin-bottom: 30px;
     width: 100%;
   }
 
   .searchBar {
-    width: 100%;
+    width: 90%;
     max-width: 1200px; /* Adjust this to match the width of your hero banner */
     padding: 12px;
     font-size: 18px;
