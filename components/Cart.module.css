@@ -1,0 +1,23 @@
+/* styles.css or your relevant CSS file */
+
+.cart-wrapper {
+    position: fixed;
+    top: 0;
+    right: -400px; /* Initially hide off-screen */
+    width: 400px; /* Set your desired width */
+    height: 100%;
+    background: white;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease; /* Smooth transition */
+    z-index: 1000; /* Make sure it's on top */
+  }
+
+  .cart-wrapper.show {
+    right: 0; /* Slide in */
+  }
+
+  .cart-container {
+    padding: 20px;
+    overflow-y: auto; /* Add scrolling if needed */
+    height: 100%; /* Ensure it takes full height */
+  }

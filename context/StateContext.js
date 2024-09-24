@@ -3,7 +3,30 @@ import { toast } from 'react-hot-toast';
 
 const Context = createContext();
 
-export const StateProvider = ({ children }) => { // Change this to StateProvider
+const customErrorToast = (message) => {
+  toast.custom((t) => (
+    <div
+      style={{
+        background: 'white',
+        color: 'red',
+        padding: '16px',
+        borderRadius: '8px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
+    >
+      <span style={{ color: 'red' }}>⚠️ {message}</span>
+      <button onClick={() => toast.dismiss(t.id)} style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}>✖️</button>
+    </div>
+  ));
+};
+
+const customSuccessToast = (message) => {
+  toast.success(message);
+};
+
+export const StateProvider = ({ children }) => {
   const [showCart, setShowCart] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -11,10 +34,19 @@ export const StateProvider = ({ children }) => { // Change this to StateProvider
   const [qty, setQty] = useState(1);
 
   let foundProduct;
-  let index;
 
   const onAdd = (product, quantity) => {
     const checkProductInCart = cartItems.find((item) => item._id === product._id);
+
+    if (checkProductInCart && checkProductInCart.quantity + quantity > product.stock) {
+      customErrorToast(`Only ${product.stock} of ${product.name} in stock!`);
+      return;
+    }
+
+    if (!checkProductInCart && quantity > product.stock) {
+      customErrorToast(`Only ${product.stock} of ${product.name} in stock!`);
+      return;
+    }
 
     setTotalPrice((prevTotalPrice) => prevTotalPrice + product.price * quantity);
     setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + quantity);
@@ -23,9 +55,9 @@ export const StateProvider = ({ children }) => { // Change this to StateProvider
       const updatedCartItems = cartItems.map((cartProduct) => {
         if (cartProduct._id === product._id) return {
           ...cartProduct,
-          quantity: cartProduct.quantity + quantity
+          quantity: cartProduct.quantity + quantity,
         };
-        return cartProduct; // Ensure to return the cartProduct
+        return cartProduct;
       });
       setCartItems(updatedCartItems);
     } else {
@@ -33,32 +65,46 @@ export const StateProvider = ({ children }) => { // Change this to StateProvider
       setCartItems([...cartItems, { ...product }]);
     }
 
-    toast.success(`${quantity} ${product.name} added to cart.`);
+    customSuccessToast(`${quantity} ${product.name} added to cart.`);
   };
 
   const onRemove = (product) => {
     foundProduct = cartItems.find((item) => item._id === product._id);
-    const newCartItems = cartItems.filter((item) => item._id !== product._id);
 
-    setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price * foundProduct.quantity);
-    setTotalQuantities((prevTotalQuantities) => prevTotalQuantities - foundProduct.quantity);
-    setCartItems(newCartItems);
+    if (foundProduct) {
+      const newCartItems = cartItems.filter((item) => item._id !== product._id);
+
+      setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price * foundProduct.quantity);
+      setTotalQuantities((prevTotalQuantities) => prevTotalQuantities - foundProduct.quantity);
+      setCartItems(newCartItems);
+
+      customErrorToast(`${foundProduct.name} removed from cart.`); // Change to error toast
+    } else {
+      customErrorToast(`Item not found in cart.`);
+    }
   };
 
   const toggleCartItemQuantity = (id, value) => {
     foundProduct = cartItems.find((item) => item._id === id);
-    index = cartItems.findIndex((product) => product._id === id);
     const newCartItems = cartItems.filter((item) => item._id !== id);
 
     if (value === 'inc') {
-      setCartItems([...newCartItems, { ...foundProduct, quantity: foundProduct.quantity + 1 }]);
-      setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price);
-      setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + 1);
+      if (foundProduct.quantity < foundProduct.stock) {
+        setCartItems([...newCartItems, { ...foundProduct, quantity: foundProduct.quantity + 1 }]);
+        setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price);
+        setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + 1);
+        customSuccessToast(`Increased quantity of ${foundProduct.name}.`);
+      } else {
+        customErrorToast(`Only ${foundProduct.stock} of ${foundProduct.name} available!`);
+      }
     } else if (value === 'dec') {
       if (foundProduct.quantity > 1) {
         setCartItems([...newCartItems, { ...foundProduct, quantity: foundProduct.quantity - 1 }]);
         setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price);
         setTotalQuantities((prevTotalQuantities) => prevTotalQuantities - 1);
+        customSuccessToast(`Decreased quantity of ${foundProduct.name}.`);
+      } else {
+        customErrorToast(`Cannot decrease quantity below 1.`);
       }
     }
   };
@@ -90,7 +136,7 @@ export const StateProvider = ({ children }) => { // Change this to StateProvider
         onRemove,
         setCartItems,
         setTotalPrice,
-        setTotalQuantities
+        setTotalQuantities,
       }}
     >
       {children}

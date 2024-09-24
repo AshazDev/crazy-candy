@@ -5,9 +5,10 @@ import { AiOutlineMinus, AiOutlinePlus, AiOutlineLeft, AiOutlineShopping } from 
 import { TiDeleteOutline } from 'react-icons/ti';
 import { useStateContext } from '../context/StateContext';
 import { urlFor } from '../lib/client';
+import { toast } from 'react-hot-toast';
 
 const Cart = () => {
-  const { totalPrice, totalQuantities, cartItems, setShowCart, toggleCartItemQuantity, onRemove } = useStateContext();
+  const { totalPrice, totalQuantities, cartItems, setShowCart, toggleCartItemQuantity, onRemove, showCart } = useStateContext();
   const router = useRouter();
 
   const handleCheckout = () => {
@@ -24,21 +25,23 @@ const Cart = () => {
   const handleQuantityChange = (item, action) => {
     if (action === 'dec' && item.quantity <= 1) {
       onRemove(item);
+      toast.success(`${item.name} removed from cart.`, { icon: '✅' });
     } else if (action === 'inc' && item.quantity >= item.stock) {
-      alert(`You cannot add more than ${item.stock} units of this product.`);
+      toast.error(`Cannot add more than ${item.stock} units of ${item.name}.`, { icon: '❌' });
     } else {
       toggleCartItemQuantity(item._id, action);
     }
   };
 
+  const handleRemoveItem = (item) => {
+    onRemove(item);
+    toast.success(`${item.name} removed from cart.`, { icon: '✅' });
+  };
+
   return (
-    <div className="cart-wrapper">
+    <div className={`cart-wrapper ${showCart ? 'show' : ''}`}>
       <div className="cart-container">
-        <button
-          type="button"
-          className="cart-heading"
-          onClick={() => setShowCart(false)}
-        >
+        <button type="button" className="cart-heading" onClick={() => setShowCart(false)}>
           <AiOutlineLeft />
           <span className="heading">Your Cart</span>
           <span className="cart-num-items">({totalQuantities} items)</span>
@@ -50,11 +53,7 @@ const Cart = () => {
             <h3>Your shopping bag is empty</h3>
             <Link href="/">
               <a>
-                <button
-                  type="button"
-                  onClick={() => setShowCart(false)}
-                  className="btn"
-                >
+                <button type="button" onClick={() => setShowCart(false)} className="btn">
                   Continue Shopping
                 </button>
               </a>
@@ -86,7 +85,7 @@ const Cart = () => {
                       <button
                         type="button"
                         className="remove-item"
-                        onClick={() => onRemove(item)}
+                        onClick={() => handleRemoveItem(item)}
                       >
                         <TiDeleteOutline />
                       </button>

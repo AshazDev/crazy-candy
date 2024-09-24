@@ -1312,3 +1312,13 @@ input{
       height: 100%; /* Cover the container height */
     }
   }
+/* Hide scrollbar for Chrome, Safari and Opera */
+body::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE and Edge */
+  body {
+    -ms-overflow-style: none; /* Internet Explorer and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
