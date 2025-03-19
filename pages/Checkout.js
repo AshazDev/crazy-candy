@@ -185,11 +185,11 @@ const Checkout = () => {
                 className={styles.select}
             >
                 <option value="cash">Cash on Delivery</option>
-                <option value="benefit">Benefit Pay (Send to +973 3964 1454)</option>
+                <option value="benefit">Benefit Pay (Send to +973 38233311)</option>
             </select>
             {formData.paymentMethod === 'benefit' && (
                 <p className={styles.paymentNote}>
-                Please send the payment to the number <strong>+973 3964 1454</strong> and upload the transaction image below.
+                Please send the payment to the number <strong>+973 38233311</strong> and upload the transaction image below.
                 </p>
             )}
             </div>
